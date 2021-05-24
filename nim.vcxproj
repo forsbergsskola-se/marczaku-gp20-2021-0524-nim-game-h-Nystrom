@@ -20,9 +20,9 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{77E691B6-BAC7-4EE0-A4A0-B3E7C2549556}</ProjectGuid>
+    <ProjectGuid>{EE206329-1F37-4106-86D8-C1D509DF1955}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>simpleConsoleGames</RootNamespace>
+    <RootNamespace>nim</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -154,7 +154,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="simpleConsoleGames.cpp" />
+    <ClCompile Include="nim.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

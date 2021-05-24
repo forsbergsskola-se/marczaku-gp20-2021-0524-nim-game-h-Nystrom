@@ -2,6 +2,7 @@
 *.d
 
 # Ignore Rider
+x64/*
 *.idea
 
 # Compiled Object files
