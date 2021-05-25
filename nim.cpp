@@ -4,7 +4,7 @@ using namespace std;
 #include <string>
 #include <limits>
 
-void WriteMatches(int matchAmount) {
+void UpdateMatches(int matchAmount) {
     for (int i = 0; i < matchAmount; i++) {
         cout << "I" << flush;
     }
@@ -33,17 +33,17 @@ int DrawMatches(int playerNumber, int matchesLeft) {
             else
                 return drawnMatches;
         }else{
-            drawnMatches = 0;
+            drawnMatches = -1;
             errorMessage = "Needs to be a number between 1 and 3!";
         }
         cout << errorMessage << endl;
-        WriteMatches(matchesLeft);
+        UpdateMatches(matchesLeft);
     }
 }
 int NextPlayer(int currentPlayer) {
     return currentPlayer == 1 ? 2 : 1;
 }
-bool InputCheck(string valueCheck, string message) {
+bool BooleanInputCheck(string valueCheck, string message) {
     string inputValue;
     cout << message << endl;
     getline(cin, inputValue);
@@ -53,22 +53,23 @@ bool InputCheck(string valueCheck, string message) {
 int main() {
     const int startMatches = 24;
     while (true) {
-        bool bot = InputCheck("b", "vs bot: b, pvp: other");
+        bool bot = BooleanInputCheck("b", "vs bot: b, pvp: other");
         int matches = startMatches;
         int currentPlayer = 0;
-        WriteMatches(matches);
+        UpdateMatches(matches);
         while (matches > 0) {
             currentPlayer = NextPlayer(currentPlayer);
             if(bot && currentPlayer == 2){
                 matches -= BotDrawMatches(matches);
             }
-            else
-            matches -= DrawMatches(currentPlayer, matches);
+            else{
+                matches -= DrawMatches(currentPlayer, matches);
+            }
             
-            WriteMatches(matches);
+            UpdateMatches(matches);
         }
         cout << "Player " + to_string(currentPlayer) + " won!" << endl;
-        if (InputCheck("x", "Quit: x"))
+        if (BooleanInputCheck("x", "Quit: x"))
             break;
     }
     cout << "Thanks for playing nim! :) " << endl;
