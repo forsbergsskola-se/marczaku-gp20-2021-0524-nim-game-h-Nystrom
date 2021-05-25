@@ -71,11 +71,12 @@ bool HasThreeInARow(const int currentPlayer,const int newTileNumber,string tileM
     const int middleTileValue = 4;
     //TODO: Check diagonals
     if(tileMap[middleTileValue] == playerMarker && newTileNumber % 2 == 0){
-        if(tileMap[0] == playerMarker && tileMap[8] == playerMarker){
-            return true;
-        }
-        if(tileMap[2] == playerMarker && tileMap[6] == playerMarker){
-            return true;
+
+        for (int i = 6; i <= 8; i++){
+            if(tileMap[i] == playerMarker && tileMap[i%4] == playerMarker){
+                return true;
+            }
+            ++i;
         }
     }
     //TODO: VerticalCheck:
@@ -108,6 +109,7 @@ int main(){
         int currentPlayer = 0;
         int tileNumber = 0;
         int currentTurn = 1;
+        string endOfGameMessage;
         InstantiateTileMap(tileMap);    
         UpdateTileMap(tileMap, rowSize);
         
@@ -124,14 +126,16 @@ int main(){
             UpdateTileMap(tileMap, rowSize);
 
             if(HasThreeInARow(currentPlayer, tileNumber,tileMap)){
+                endOfGameMessage = "Player"+to_string(currentPlayer)+ " won!";
                 break;
             }
             ++currentTurn;
             if(currentTurn > maxSize){
+                endOfGameMessage = "Game ended in a draw!";
                  break;   
             }
         }
-        cout << "End of game message" << endl;
+        cout << endOfGameMessage << endl;
         if (BooleanInputCheck("x", "Quit: x"))
             break;
     }
