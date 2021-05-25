@@ -8,7 +8,7 @@ void InstantiateTileMap(string tileMap[]){
         tileMap[i] = " ";
     }
 }
-void UpdateTileMap(string tileMap[], int rowSize){
+void UpdateTileMap(string tileMap[], const int rowSize){
     for (int i = 0; i <=  sizeof(tileMap);i++){
         cout << " | " + tileMap[i] << flush;
         const int tempNumber = i + 1;
@@ -19,7 +19,7 @@ void UpdateTileMap(string tileMap[], int rowSize){
             
     }
 }
-bool IsTileEmpty(string tile){
+bool IsTileEmpty(const string tile){
     return tile == " ";
 }
 int PickTile(const int currentPlayer, string tileMap[]){
@@ -46,7 +46,14 @@ int PickTile(const int currentPlayer, string tileMap[]){
         cout << errorMessage << endl;
     }
 }
-int BotPickTile(int currentPlayer){
+int BotPickTile(const int currentPlayer){
+    //TODO:Implement
+    //1: own 2 in a row tiles...
+    //2: opponents 2 in a row tiles...
+    //3: middle tile...
+    //4: diagonal tiles (X%2)...
+    //5: Random of what is left...
+    
     cout << "Player"+ to_string(currentPlayer) + "'s turn to pick tile: " << endl;
     return 5;
 }
@@ -58,7 +65,7 @@ string GetTileMarker(const int currentPlayer){
     return currentPlayer == 1 ? "O" : "X";
 }
 
-bool BooleanInputCheck(string valueCheck, string message) {
+bool BooleanInputCheck(const string valueCheck, const string message) {
     string inputValue;
     cout << message << endl;
     getline(cin, inputValue);
@@ -119,14 +126,14 @@ bool HasThreeInARow(const CurrentTurnData currentTurnData,string tileMap[]){
 }
     
 int main(){
-    const int rowSize = 3;
     const int maxSize = 9;
     string tileMap[maxSize];
     
     while (true) {
-        bool bot = BooleanInputCheck("b", "vs bot: b, pvp: other");
+        const int rowSize = 3;
+        const bool bot = BooleanInputCheck("b", "vs bot: b, pvp: other");
         int currentPlayer = 0;
-        int tileNumber = 0;
+        int tileNumber;
         int currentTurn = 1;
         string endOfGameMessage;
         InstantiateTileMap(tileMap);    
@@ -142,7 +149,7 @@ int main(){
             }
             tileMap[tileNumber] = GetTileMarker(currentPlayer);
             UpdateTileMap(tileMap, rowSize);
-            auto currentTurnData = new CurrentTurnData(GetTileMarker(currentPlayer),tileNumber);
+            const auto currentTurnData = new CurrentTurnData(GetTileMarker(currentPlayer),tileNumber);
             if(HasThreeInARow(*currentTurnData,tileMap)){
                 endOfGameMessage = "Player"+to_string(currentPlayer)+ " won!";
                 delete currentTurnData;
@@ -156,7 +163,7 @@ int main(){
             }
         }
         cout << endOfGameMessage << endl;
-        if (BooleanInputCheck("x", "Quit: x"))
+        if (BooleanInputCheck("x", "Quit: x, Anything else: play again"))
             break;
     }
     cout << "Thanks for playing Tic tac toe! :) " << endl;
