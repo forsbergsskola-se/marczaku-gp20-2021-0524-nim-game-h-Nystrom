@@ -65,27 +65,31 @@ bool BooleanInputCheck(string valueCheck, string message) {
     return inputValue == valueCheck;
 }
 
-bool HasThreeInARow(const int currentPlayer,string tileMap[]){
-    string playerMarker = GetTileMarker(currentPlayer);
-    for (int i = sizeof(tileMap); i >= 0; i--){
-        int inRowCounter = 0;
-        if(tileMap[i] != playerMarker)
-            continue;
-        if(i % 3 == 0){
-            for (int horizontalIndex = i-1; horizontalIndex >= 0; horizontalIndex--){
-            if(tileMap[horizontalIndex] != playerMarker)
-                break;
-            }
-            inRowCounter++;
-            if(inRowCounter == 2)
-                return true;
-        }
-        
-        //-1, -2
-        //-3*1, -3*2
-        //-4*1, -4*2
+bool HasThreeInARow(const int currentPlayer,const int newTileNumber,string tileMap[]){
+    const string playerMarker = GetTileMarker(currentPlayer);
+
+    //TODO: Check diagonals
+    if(tileMap[4] == playerMarker && newTileNumber % 2 == 0){
+        //Middle is theirs!
+        //Check 0 and 2
+        //Check 6 and 8
     }
-    
+    //TODO: VerticalCheck:
+    for (int i = 0; i < 3; i++){
+        const int temp = newTileNumber % 3 + i * 3;
+        if(tileMap[temp] != playerMarker)
+            break;
+        if(i==2)
+            return true;
+    }
+    //TODO: HorizontalCheck:
+    for (int i = 0; i < 3; i++){
+        const int temp = newTileNumber - newTileNumber % 3 + i;
+        if(tileMap[temp] != playerMarker)
+            break;
+        if(i==2)
+            return true;
+    }
     
  return false;   
 }
@@ -115,9 +119,9 @@ int main(){
             tileMap[tileNumber] = GetTileMarker(currentPlayer);
             UpdateTileMap(tileMap, rowSize);
 
-            // if(HasThreeInARow(currentPlayer,tileMap)){
-            //     break;
-            // }
+            if(HasThreeInARow(currentPlayer, tileNumber,tileMap)){
+                break;
+            }
             ++currentTurn;
             if(currentTurn > maxSize){
                  break;   
