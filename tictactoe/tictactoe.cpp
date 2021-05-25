@@ -67,12 +67,16 @@ bool BooleanInputCheck(string valueCheck, string message) {
 
 bool HasThreeInARow(const int currentPlayer,const int newTileNumber,string tileMap[]){
     const string playerMarker = GetTileMarker(currentPlayer);
-
+    const int diagonalMaxValue = 12;
+    const int middleTileValue = 4;
     //TODO: Check diagonals
-    if(tileMap[4] == playerMarker && newTileNumber % 2 == 0){
-        //Middle is theirs!
-        //Check 0 and 2
-        //Check 6 and 8
+    if(tileMap[middleTileValue] == playerMarker && newTileNumber % 2 == 0){
+        if(tileMap[0] == playerMarker && tileMap[8] == playerMarker){
+            return true;
+        }
+        if(tileMap[2] == playerMarker && tileMap[6] == playerMarker){
+            return true;
+        }
     }
     //TODO: VerticalCheck:
     for (int i = 0; i < 3; i++){
