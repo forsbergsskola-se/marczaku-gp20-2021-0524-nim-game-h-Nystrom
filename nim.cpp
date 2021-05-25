@@ -31,11 +31,11 @@ int DrawMatches(int playerNumber, int matchesLeft) {
             else
                 return drawnMatches;
         }else{
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(),'\n');
             drawnMatches = 0;
             errorMessage = "Needs to be a number between 1 and 3!";
         }
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(),'\n');
         
         cout << errorMessage << endl;
         WriteMatches(matchesLeft);
