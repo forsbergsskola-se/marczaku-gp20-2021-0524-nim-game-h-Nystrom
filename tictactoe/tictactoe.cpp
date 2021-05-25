@@ -64,41 +64,60 @@ bool BooleanInputCheck(string valueCheck, string message) {
     getline(cin, inputValue);
     return inputValue == valueCheck;
 }
-
-bool HasThreeInARow(const int currentPlayer,const int newTileNumber,string tileMap[]){
-    const string playerMarker = GetTileMarker(currentPlayer);
-    const int diagonalMaxValue = 12;
+class CurrentTurnData{
+public:string marker;
+public:int newTileIndex;
+    CurrentTurnData(const string playerMarker, const int playerTileNumber){
+        this->marker = playerMarker;
+        this-> newTileIndex = playerTileNumber;
+    }
+};
+bool DiagonalCheck(const CurrentTurnData currentTurn,string tileMap[]){
     const int middleTileValue = 4;
-    //TODO: Check diagonals
-    if(tileMap[middleTileValue] == playerMarker && newTileNumber % 2 == 0){
-
+    if(tileMap[middleTileValue] == currentTurn.marker && currentTurn.newTileIndex % 2 == 0){
         for (int i = 6; i <= 8; i++){
-            if(tileMap[i] == playerMarker && tileMap[i%4] == playerMarker){
+            if(tileMap[i] == currentTurn.marker && tileMap[i%middleTileValue] == currentTurn.marker){
                 return true;
             }
             ++i;
         }
     }
-    //TODO: VerticalCheck:
-    for (int i = 0; i < 3; i++){
-        const int temp = newTileNumber % 3 + i * 3;
-        if(tileMap[temp] != playerMarker)
+    return false;
+}
+bool RowCheck(const CurrentTurnData currentTurnData,string tileMap[]){
+    const int columnLength = 3;
+    for (int i = 0; i < columnLength; i++){
+        const int temp = currentTurnData.newTileIndex % columnLength + i * columnLength;
+        if(tileMap[temp] != currentTurnData.marker)
             break;
         if(i==2)
             return true;
     }
-    //TODO: HorizontalCheck:
-    for (int i = 0; i < 3; i++){
-        const int temp = newTileNumber - newTileNumber % 3 + i;
-        if(tileMap[temp] != playerMarker)
-            break;
-        if(i==2)
-            return true;
-    }
-    
- return false;   
+    return false;
 }
 
+bool ColumnCheck(const CurrentTurnData playerTurnData,string tileMap[]){
+    const int rowLength = 3;
+    for (int i = 0; i < rowLength; i++){
+        const int temp = playerTurnData.newTileIndex - playerTurnData.newTileIndex % rowLength + i;
+        if(tileMap[temp] != playerTurnData.marker)
+            break;
+        if(i==2)
+            return true;
+    }
+    return false;
+}
+
+bool HasThreeInARow(const CurrentTurnData currentTurnData,string tileMap[]){
+    if(DiagonalCheck(currentTurnData, tileMap))
+        return true;
+    if(RowCheck(currentTurnData, tileMap))
+        return true;
+    if(ColumnCheck(currentTurnData, tileMap))
+        return true;   
+    return false;
+}
+    
 int main(){
     const int rowSize = 3;
     const int maxSize = 9;
@@ -121,17 +140,18 @@ int main(){
             else{
                 tileNumber = PickTile(currentPlayer, tileMap);
             }
-            
             tileMap[tileNumber] = GetTileMarker(currentPlayer);
             UpdateTileMap(tileMap, rowSize);
-
-            if(HasThreeInARow(currentPlayer, tileNumber,tileMap)){
+            auto currentTurnData = new CurrentTurnData(GetTileMarker(currentPlayer),tileNumber);
+            if(HasThreeInARow(*currentTurnData,tileMap)){
                 endOfGameMessage = "Player"+to_string(currentPlayer)+ " won!";
+                delete currentTurnData;
                 break;
             }
             ++currentTurn;
             if(currentTurn > maxSize){
                 endOfGameMessage = "Game ended in a draw!";
+                delete currentTurnData;
                  break;   
             }
         }
