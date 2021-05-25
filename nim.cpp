@@ -2,6 +2,7 @@
 using namespace std;
 #include <iostream>
 #include <string>
+#include <limits>
 
 void WriteMatches(int matchAmount) {
     for (int i = 0; i < matchAmount; i++) {
@@ -19,12 +20,20 @@ int DrawMatches(int playerNumber, int matchesLeft) {
     cout << "Player" + to_string(playerNumber) + "'s turn to draw matches: " << endl;
     while (true) {
         string errorMessage;
-        if (drawnMatches < minDraw || drawnMatches > maxDraw)
+        if(cin >> drawnMatches){
+            if (drawnMatches < minDraw || drawnMatches > maxDraw)
+                errorMessage = "Needs to be a number between 1 and 3!";
+            else if (drawnMatches > matchesLeft)
+                errorMessage = "Only " + to_string(matchesLeft) + " matches are left!";
+            else
+                return drawnMatches;
+        }else{
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(),'\n');
+            drawnMatches = 0;
             errorMessage = "Needs to be a number between 1 and 3!";
-        else if (drawnMatches > matchesLeft)
-            errorMessage = "Only " + to_string(matchesLeft) + " matches are left!";
-        else
-            return drawnMatches;
+        }
+        
         cout << errorMessage << endl;
         WriteMatches(matchesLeft);
     }
