@@ -10,8 +10,6 @@ void WriteMatches(int matchAmount) {
     }
     cout << "" << endl;
 }
-//TODO: handle input errors
-//TODO: Refactor error handling to new method
 int BotDrawMatches(int matchesLeft){
     int value = matchesLeft % 4;
     cout << "Player2's turn: bot picked: " + to_string(value) << endl;
