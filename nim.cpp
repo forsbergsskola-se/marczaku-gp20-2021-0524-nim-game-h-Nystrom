@@ -23,6 +23,8 @@ int DrawMatches(int playerNumber, int matchesLeft) {
     while (true) {
         string errorMessage;
         cin >> noskipws >>drawnMatches;
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(),'\n');
         if(drawnMatches){
             if (drawnMatches < minDraw || drawnMatches > maxDraw)
                 errorMessage = "Needs to be a number between 1 and 3!";
@@ -34,9 +36,6 @@ int DrawMatches(int playerNumber, int matchesLeft) {
             drawnMatches = 0;
             errorMessage = "Needs to be a number between 1 and 3!";
         }
-        cin.clear();
-        cin.ignore(numeric_limits<streamsize>::max(),'\n');
-        
         cout << errorMessage << endl;
         WriteMatches(matchesLeft);
     }
