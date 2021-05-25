@@ -20,11 +20,12 @@ int BotDrawMatches(int matchesLeft){
 int DrawMatches(int playerNumber, int matchesLeft) {
     const int maxDraw = 3;
     const int minDraw = 1;
-    int drawnMatches;
+    int drawnMatches = -1;
     cout << "Player" + to_string(playerNumber) + "'s turn to draw matches: " << endl;
     while (true) {
         string errorMessage;
-        if(cin >> drawnMatches){
+        cin >> noskipws >>drawnMatches;
+        if(drawnMatches){
             if (drawnMatches < minDraw || drawnMatches > maxDraw)
                 errorMessage = "Needs to be a number between 1 and 3!";
             else if (drawnMatches > matchesLeft)
@@ -48,7 +49,7 @@ int NextPlayer(int currentPlayer) {
 bool InputCheck(string valueCheck, string message) {
     string inputValue;
     cout << message << endl;
-    cin >> inputValue;
+    getline(cin, inputValue);
     return inputValue == valueCheck;
 }
 
@@ -66,6 +67,7 @@ int main() {
             }
             else
             matches -= DrawMatches(currentPlayer, matches);
+            
             WriteMatches(matches);
         }
         cout << "Player " + to_string(currentPlayer) + " won!" << endl;
