@@ -3,6 +3,7 @@
 
 # Ignore Rider
 x64/*
+Debug/*
 *.idea
 
 # Compiled Object files
