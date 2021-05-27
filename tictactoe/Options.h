@@ -2,16 +2,16 @@
 #include <cstdlib>
 
 class Options{
-    int firstPlayerTwoInARowEmptyIndex[6]{-1,-1,-1,-1,-1,-1};
-    int secondPlayerTwoInARowEmptyIndex[6]{-1,-1,-1,-1,-1,-1};
+    int OpponentsTwoInARowEmptyIndex[6]{-1,-1,-1,-1,-1,-1};
+    int OwnTwoInARowEmptyIndex[6]{-1,-1,-1,-1,-1,-1};
     int ownedTiles = 0;
     int opponentTiles = 0;
     int emptyTileIndex = -1;
     public:int GetOffensiveTileIndex(){
-        return GetRandomTileIndexFrom(secondPlayerTwoInARowEmptyIndex);
+        return GetRandomTileIndexFrom(OwnTwoInARowEmptyIndex);
     }
     public:int GetDefensiveTileIndex(){
-        return GetRandomTileIndexFrom(firstPlayerTwoInARowEmptyIndex);
+        return GetRandomTileIndexFrom(OpponentsTwoInARowEmptyIndex);
     }
     void GetOption(const char tileMarker, const int index){
         switch (tileMarker){
@@ -33,9 +33,9 @@ class Options{
         if((index+1) % moduloValue == 0){
             if(emptyTileIndex != -1){
                 if(ownedTiles == 2)
-                    AddToArray(secondPlayerTwoInARowEmptyIndex, emptyTileIndex);
-                if(opponentTiles == 2)
-                    AddToArray(firstPlayerTwoInARowEmptyIndex, emptyTileIndex);
+                    AddToArray(OwnTwoInARowEmptyIndex, emptyTileIndex);
+                else if(opponentTiles == 2)
+                    AddToArray(OpponentsTwoInARowEmptyIndex, emptyTileIndex);
             }
             ownedTiles = 0;
             opponentTiles = 0;
