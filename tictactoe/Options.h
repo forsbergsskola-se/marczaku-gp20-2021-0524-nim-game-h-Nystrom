@@ -2,16 +2,16 @@
 #include <cstdlib>
 
 class Options{
-    int OpponentsTwoInARowEmptyIndex[6]{-1,-1,-1,-1,-1,-1};
-    int OwnTwoInARowEmptyIndex[6]{-1,-1,-1,-1,-1,-1};
+    vector<int>opponentsOptions;
+    vector<int> ownOptions;
     int ownedTiles = 0;
     int opponentTiles = 0;
     int emptyTileIndex = -1;
     public:int GetOffensiveTileIndex(){
-        return GetRandomTileIndexFrom(OwnTwoInARowEmptyIndex);
+        return GetRandomTileIndexFrom(ownOptions);
     }
     public:int GetDefensiveTileIndex(){
-        return GetRandomTileIndexFrom(OpponentsTwoInARowEmptyIndex);
+        return GetRandomTileIndexFrom(opponentsOptions);
     }
     void GetOption(const char tileMarker, const int index){
         switch (tileMarker){
@@ -33,29 +33,19 @@ class Options{
         if((index+1) % moduloValue == 0){
             if(emptyTileIndex != -1){
                 if(ownedTiles == 2)
-                    AddToArray(OwnTwoInARowEmptyIndex, emptyTileIndex);
+                    ownOptions.push_back(emptyTileIndex);
                 else if(opponentTiles == 2)
-                    AddToArray(OpponentsTwoInARowEmptyIndex, emptyTileIndex);
+                    opponentsOptions.push_back(emptyTileIndex);
             }
             ownedTiles = 0;
             opponentTiles = 0;
             emptyTileIndex = -1;
         }
     }
-
-    static void AddToArray(int emptyTiles[6], const int tileIndex){
-        for (int i = 0; i < sizeof(emptyTiles);i++){
-            if(emptyTiles[i] == -1)
-                emptyTiles[i] = tileIndex;
-        }
-    }
-    static int GetRandomTileIndexFrom(int emptyTiles[6]){
-        const int maxLength = 5;
-        for(int i = 0; i <= maxLength;i++){
-            const int randomNumber = rand() % maxLength;
-            if(emptyTiles[randomNumber] != -1)
-                return emptyTiles[randomNumber];
-        }
-        return -1;
+    static int GetRandomTileIndexFrom(vector<int> emptyTiles){
+        if(emptyTiles.empty())
+            return -1;
+            const int randomNumber = rand() % emptyTiles.size();
+            return emptyTiles[randomNumber];
     }
 };

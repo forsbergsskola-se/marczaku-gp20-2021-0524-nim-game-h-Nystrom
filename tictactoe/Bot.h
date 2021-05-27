@@ -1,4 +1,8 @@
 ﻿#pragma once
+#include <list>
+#include <cstdlib>
+#include <vector>
+
 #include "Options.h"
 
 using namespace std;
@@ -6,7 +10,6 @@ using namespace std;
 
 
 class Bot{
-    
     public:static int PickTile(string tileMap[]){
         //TODO:Implement and refactor:
         int tileIndex = -1;
@@ -26,12 +29,10 @@ class Bot{
         if(CanPickMiddleTile(tileMap[4][0])){
             return 4;
         }
-        for (int i = 0; i < sizeof(tileMap);i++){
-            if(tileMap[i][0] == ' ')
-                return i;
-        }
-        
-        return 0;
+        const int emptyTileIndex = GetRandomEvenEmptyTileIndex(tileMap);
+        if(emptyTileIndex != -1)
+            return emptyTileIndex;
+        return GetFirstEmptyTileIndex(tileMap);
     }
 
     static bool CanPickMiddleTile(const char middleTile){
@@ -56,10 +57,29 @@ class Bot{
     }
     static void FindDiagonalOptions(string* tileMap, Options* option){
         for(int i = 0; i <= 2;i+=2){
-            for(int j = 2-i; j <= 6+i;j+=2+i){
+            for(int j = 0+i; j <= 8-i;j+=4-i){//0,4,8 //2,4,6
                 option->GetOption(tileMap[j][0],j);
-                option->GetTwoInARow(j,7);
+                option->GetTwoInARow(j, 9-i);
             }
         }
+    }
+    static int GetRandomEvenEmptyTileIndex(string* tileMap){
+        auto tileMapCopy = new vector<int>();
+        
+        for (int i = 0; i < sizeof(tileMap);i++){
+            if(tileMap[i][0] == ' ' && i % 2 == 0)
+                tileMapCopy->push_back(i);
+        }
+        if(tileMapCopy->size() == 0)
+            return -1;
+        const int randomNumber = rand() % tileMapCopy->size();
+        return tileMapCopy->at(randomNumber);
+    }
+    static int GetFirstEmptyTileIndex(string* tileMap){
+        for (int i = 0; i < sizeof(tileMap);i++){
+            if(tileMap[i][0] == ' ' && i % 2 == 0)
+                return i;
+        }
+        return -1;
     }
 };
