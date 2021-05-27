@@ -3,9 +3,9 @@ using namespace std;
 #include <string>
 #include <limits>
 
-void InstantiateTileMap(string tileMap[]){
+void CreateTileMap(string tileMap[]){
     for (int i = 0; i <= sizeof(tileMap);i++){
-        tileMap[i] = " ";
+        tileMap[i] = ' ';
     }
 }
 void UpdateTileMap(string tileMap[], const int rowSize){
@@ -19,8 +19,8 @@ void UpdateTileMap(string tileMap[], const int rowSize){
             
     }
 }
-bool IsTileEmpty(const string tile){
-    return tile == " ";
+bool IsTileEmpty(const char tile){
+    return tile == ' ';
 }
 int PickTile(const int currentPlayer, string tileMap[]){
     const int indexAdjuster = 1;
@@ -36,7 +36,7 @@ int PickTile(const int currentPlayer, string tileMap[]){
         if(playerInput){
             if(playerInput < 1 || playerInput > maxIndex)
                 errorMessage = "Needs to be a number between 1 and " + to_string(maxIndex) + "!";
-            else if (!IsTileEmpty(tileMap[playerInput-indexAdjuster]))
+            else if (!IsTileEmpty(tileMap[playerInput-indexAdjuster][0]))
                 errorMessage = "Needs to be an empty tile!";
             else
                 return --playerInput;
@@ -46,44 +46,33 @@ int PickTile(const int currentPlayer, string tileMap[]){
         cout << errorMessage << endl;
     }
 }
-int BotPickTile(const int currentPlayer){
-    //TODO:Implement
-    //1: own 2 in a row tiles...
-    //2: opponents 2 in a row tiles...
-    //3: middle tile...
-    //4: diagonal tiles (X%2)...
-    //5: Random of what is left...
-    
-    cout << "Player"+ to_string(currentPlayer) + "'s turn to pick tile: " << endl;
-    return 5;
-}
 
 int NextPlayer(const int currentPlayer){
     return currentPlayer == 1 ? 2 : 1;
 }
-string GetTileMarker(const int currentPlayer){
-    return currentPlayer == 1 ? "O" : "X";
+char GetTileMarker(const int currentPlayer){
+    return currentPlayer == 1 ? 'O' : 'X';
 }
 
-bool BooleanInputCheck(const string valueCheck, const string message) {
+bool BooleanInputCheck(const char valueCheck, const string message) {
     string inputValue;
     cout << message << endl;
     getline(cin, inputValue);
-    return inputValue == valueCheck;
+    return inputValue[0] == valueCheck;
 }
 class CurrentTurnData{
-public:string marker;
+public:char marker;
 public:int newTileIndex;
-    CurrentTurnData(const string playerMarker, const int playerTileNumber){
+    CurrentTurnData(const char playerMarker, const int playerTileNumber){
         this->marker = playerMarker;
         this-> newTileIndex = playerTileNumber;
     }
 };
 bool DiagonalCheck(const CurrentTurnData currentTurn,string tileMap[]){
     const int middleTileValue = 4;
-    if(tileMap[middleTileValue] == currentTurn.marker && currentTurn.newTileIndex % 2 == 0){
+    if(tileMap[middleTileValue][0] == currentTurn.marker && currentTurn.newTileIndex % 2 == 0){
         for (int i = 6; i <= 8; i++){
-            if(tileMap[i] == currentTurn.marker && tileMap[i%middleTileValue] == currentTurn.marker){
+            if(tileMap[i][0] == currentTurn.marker && tileMap[i%middleTileValue][0] == currentTurn.marker){
                 return true;
             }
             ++i;
@@ -92,24 +81,24 @@ bool DiagonalCheck(const CurrentTurnData currentTurn,string tileMap[]){
     return false;
 }
 bool RowCheck(const CurrentTurnData currentTurnData,string tileMap[]){
-    const int columnLength = 3;
-    for (int i = 0; i < columnLength; i++){
-        const int temp = currentTurnData.newTileIndex % columnLength + i * columnLength;
-        if(tileMap[temp] != currentTurnData.marker)
+    const int rowLength = 3;
+    for (int i = 0; i < rowLength; i++){
+        const int startOfRowIndex = currentTurnData.newTileIndex % rowLength + i * rowLength;
+        if(tileMap[startOfRowIndex][0] != currentTurnData.marker)
             break;
-        if(i==2)
+        if(i == rowLength-1)
             return true;
     }
     return false;
 }
 
 bool ColumnCheck(const CurrentTurnData playerTurnData,string tileMap[]){
-    const int rowLength = 3;
-    for (int i = 0; i < rowLength; i++){
-        const int temp = playerTurnData.newTileIndex - playerTurnData.newTileIndex % rowLength + i;
-        if(tileMap[temp] != playerTurnData.marker)
+    const int columnLength = 3;
+    for (int i = 0; i < columnLength; i++){
+        const int temp = playerTurnData.newTileIndex - playerTurnData.newTileIndex % columnLength + i;
+        if(tileMap[temp][0] != playerTurnData.marker)
             break;
-        if(i==2)
+        if(i==columnLength-1)
             return true;
     }
     return false;
@@ -124,25 +113,101 @@ bool HasThreeInARow(const CurrentTurnData currentTurnData,string tileMap[]){
         return true;   
     return false;
 }
+int BotPickTile(string tileMap[]){
+    cout << "Bot's turn to pick tile: " << endl;
+
+    //Try to pick middle tile:
+    if(tileMap[4][0] == ' '){
+        return 4;
+    }
+    //TODO:Implement and refactor:
+    int ownedTiles = 0;
+    int opponentTiles = 0;
+    int emptyTileIndex = -1;
+    //Check rows for 2:
+    for (int i = 0; i < sizeof(tileMap); i++){
+            switch (tileMap[i][0]){
+                case 'X':
+                    ++ownedTiles;
+                    break;
+                case 'O':
+                    ++opponentTiles;
+                    break;
+                case ' ':
+                    emptyTileIndex = i;
+                    break;
+                default:
+                    emptyTileIndex = i;
+                    break;
+        }
+        if((i+1) % 3 == 0){
+            if(emptyTileIndex != -1){
+                if(ownedTiles == 2)
+                    return emptyTileIndex;
+                if(opponentTiles == 2)
+                    return emptyTileIndex;
+            }
+            ownedTiles = 0;
+            opponentTiles = 0;
+            emptyTileIndex = -1;
+        }
+    }
+    // Check columns for 2:
+    for (int i = 0; i < 3; i++){
+        for (int j = 0; j <= 6; j+=3){
+            switch (tileMap[i+j][0]){
+            case 'X':
+                ++ownedTiles;
+                break;
+            case 'O':
+                ++opponentTiles;
+                break;
+            case ' ':
+                emptyTileIndex = i+j;
+                break;
+            default:
+                emptyTileIndex = i+j;
+                break;
+            }
+            if((j+1) % 7 == 0){
+                if(emptyTileIndex != -1){
+                    if(ownedTiles == 2)
+                        return emptyTileIndex;
+                    if(opponentTiles == 2)
+                        return emptyTileIndex;
+                    cout << "Not row " + to_string(i) << endl;
+                }
+                ownedTiles = 0;
+                opponentTiles = 0;
+                emptyTileIndex = -1;
+            }
+        }    
+    }
+    //Check diagonal tiles for 3:(X%2)
+    
+    for (int i = 0; i < sizeof(tileMap);i++){
+        if(IsTileEmpty(tileMap[i][0]))
+            return i;
+    }
+}
     
 int main(){
-    const int maxSize = 9;
-    string tileMap[maxSize];
-    
     while (true) {
+        const int maxSize = 9;
+        string tileMap[maxSize];
+        CreateTileMap(tileMap);
         const int rowSize = 3;
-        const bool bot = BooleanInputCheck("b", "vs bot: b, pvp: other");
+        const bool bot = BooleanInputCheck('b', "vs bot: b, pvp: other");
         int currentPlayer = 0;
         int tileNumber;
         int currentTurn = 1;
-        string endOfGameMessage;
-        InstantiateTileMap(tileMap);    
+        string endOfGameMessage; 
         UpdateTileMap(tileMap, rowSize);
         
         while (true){
             currentPlayer = NextPlayer(currentPlayer);
             if(bot && currentPlayer == 2){
-                tileNumber = BotPickTile(currentPlayer);
+                tileNumber = BotPickTile(tileMap);
             }
             else{
                 tileNumber = PickTile(currentPlayer, tileMap);
@@ -163,7 +228,7 @@ int main(){
             }
         }
         cout << endOfGameMessage << endl;
-        if (BooleanInputCheck("x", "Quit: x, Anything else: play again"))
+        if (BooleanInputCheck('x', "Quit: x, Anything else: play again"))
             break;
     }
     cout << "Thanks for playing Tic tac toe! :) " << endl;
