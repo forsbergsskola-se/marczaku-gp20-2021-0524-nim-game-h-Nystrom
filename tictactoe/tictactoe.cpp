@@ -2,6 +2,7 @@ using namespace std;
 #include <iostream>
 #include <string>
 #include <limits>
+#include "Bot.h"
 
 void CreateTileMap(string tileMap[]){
     for (int i = 0; i <= sizeof(tileMap);i++){
@@ -113,91 +114,13 @@ bool HasThreeInARow(const CurrentTurnData currentTurnData,string tileMap[]){
         return true;   
     return false;
 }
-int BotPickTile(string tileMap[]){
-    cout << "Bot's turn to pick tile: " << endl;
-
-    //Try to pick middle tile:
-    if(tileMap[4][0] == ' '){
-        return 4;
-    }
-    //TODO:Implement and refactor:
-    int ownedTiles = 0;
-    int opponentTiles = 0;
-    int emptyTileIndex = -1;
-    //Check rows for 2:
-    for (int i = 0; i < sizeof(tileMap); i++){
-            switch (tileMap[i][0]){
-                case 'X':
-                    ++ownedTiles;
-                    break;
-                case 'O':
-                    ++opponentTiles;
-                    break;
-                case ' ':
-                    emptyTileIndex = i;
-                    break;
-                default:
-                    emptyTileIndex = i;
-                    break;
-        }
-        if((i+1) % 3 == 0){
-            if(emptyTileIndex != -1){
-                if(ownedTiles == 2)
-                    return emptyTileIndex;
-                if(opponentTiles == 2)
-                    return emptyTileIndex;
-            }
-            ownedTiles = 0;
-            opponentTiles = 0;
-            emptyTileIndex = -1;
-        }
-    }
-    // Check columns for 2:
-    for (int i = 0; i < 3; i++){
-        for (int j = 0; j <= 6; j+=3){
-            switch (tileMap[i+j][0]){
-            case 'X':
-                ++ownedTiles;
-                break;
-            case 'O':
-                ++opponentTiles;
-                break;
-            case ' ':
-                emptyTileIndex = i+j;
-                break;
-            default:
-                emptyTileIndex = i+j;
-                break;
-            }
-            if((j+1) % 7 == 0){
-                if(emptyTileIndex != -1){
-                    if(ownedTiles == 2)
-                        return emptyTileIndex;
-                    if(opponentTiles == 2)
-                        return emptyTileIndex;
-                    cout << "Not row " + to_string(i) << endl;
-                }
-                ownedTiles = 0;
-                opponentTiles = 0;
-                emptyTileIndex = -1;
-            }
-        }    
-    }
-    //Check diagonal tiles for 3:(X%2)
-    
-    for (int i = 0; i < sizeof(tileMap);i++){
-        if(IsTileEmpty(tileMap[i][0]))
-            return i;
-    }
-}
-    
 int main(){
     while (true) {
         const int maxSize = 9;
         string tileMap[maxSize];
         CreateTileMap(tileMap);
         const int rowSize = 3;
-        const bool bot = BooleanInputCheck('b', "vs bot: b, pvp: other");
+        const bool isAgainstBot = BooleanInputCheck('b', "vs bot: b, pvp: other");
         int currentPlayer = 0;
         int tileNumber;
         int currentTurn = 1;
@@ -206,8 +129,11 @@ int main(){
         
         while (true){
             currentPlayer = NextPlayer(currentPlayer);
-            if(bot && currentPlayer == 2){
-                tileNumber = BotPickTile(tileMap);
+            if(isAgainstBot && currentPlayer == 2){
+                cout << "Bot's turn to pick tile: " << endl;
+                auto bot = new Bot();
+                tileNumber = bot->PickTile(tileMap);
+                delete bot;
             }
             else{
                 tileNumber = PickTile(currentPlayer, tileMap);
