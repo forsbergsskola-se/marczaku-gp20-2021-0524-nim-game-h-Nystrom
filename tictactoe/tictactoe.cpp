@@ -3,6 +3,7 @@ using namespace std;
 #include <string>
 #include <limits>
 #include "Bot.h"
+#include "CurrentTurn.h"
 
 void CreateTileMap(string tileMap[]){
     for (int i = 0; i <= sizeof(tileMap);i++){
@@ -61,15 +62,7 @@ bool BooleanInputCheck(const char valueCheck, const string message) {
     getline(cin, inputValue);
     return inputValue[0] == valueCheck;
 }
-class CurrentTurnData{
-public:char marker;
-public:int newTileIndex;
-    CurrentTurnData(const char playerMarker, const int playerTileNumber){
-        this->marker = playerMarker;
-        this-> newTileIndex = playerTileNumber;
-    }
-};
-bool DiagonalCheck(const CurrentTurnData currentTurn,string tileMap[]){
+bool DiagonalCheck(const CurrentTurn currentTurn,string tileMap[]){
     const int middleTileValue = 4;
     if(tileMap[middleTileValue][0] == currentTurn.marker && currentTurn.newTileIndex % 2 == 0){
         for (int i = 6; i <= 8; i++){
@@ -81,7 +74,7 @@ bool DiagonalCheck(const CurrentTurnData currentTurn,string tileMap[]){
     }
     return false;
 }
-bool RowCheck(const CurrentTurnData currentTurnData,string tileMap[]){
+bool RowCheck(const CurrentTurn currentTurnData,string tileMap[]){
     const int rowLength = 3;
     for (int i = 0; i < rowLength; i++){
         const int startOfRowIndex = currentTurnData.newTileIndex % rowLength + i * rowLength;
@@ -93,7 +86,7 @@ bool RowCheck(const CurrentTurnData currentTurnData,string tileMap[]){
     return false;
 }
 
-bool ColumnCheck(const CurrentTurnData playerTurnData,string tileMap[]){
+bool ColumnCheck(const CurrentTurn playerTurnData,string tileMap[]){
     const int columnLength = 3;
     for (int i = 0; i < columnLength; i++){
         const int temp = playerTurnData.newTileIndex - playerTurnData.newTileIndex % columnLength + i;
@@ -105,7 +98,7 @@ bool ColumnCheck(const CurrentTurnData playerTurnData,string tileMap[]){
     return false;
 }
 
-bool HasThreeInARow(const CurrentTurnData currentTurnData,string tileMap[]){
+bool HasThreeInARow(const CurrentTurn currentTurnData,string tileMap[]){
     if(DiagonalCheck(currentTurnData, tileMap))
         return true;
     if(RowCheck(currentTurnData, tileMap))
@@ -138,9 +131,10 @@ int main(){
             else{
                 tileNumber = PickTile(currentPlayer, tileMap);
             }
-            tileMap[tileNumber] = GetTileMarker(currentPlayer);
+            const char playerMarker = GetTileMarker(currentPlayer);
+            tileMap[tileNumber] = playerMarker;
             UpdateTileMap(tileMap, rowSize);
-            const auto currentTurnData = new CurrentTurnData(GetTileMarker(currentPlayer),tileNumber);
+            const auto currentTurnData = new CurrentTurn(playerMarker, tileNumber);
             if(HasThreeInARow(*currentTurnData,tileMap)){
                 endOfGameMessage = "Player"+to_string(currentPlayer)+ " won!";
                 delete currentTurnData;
