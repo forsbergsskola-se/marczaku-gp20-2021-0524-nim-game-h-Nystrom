@@ -55,11 +55,21 @@ using namespace std;
         }
         cout << "" << endl;
     }
-
+    bool BooleanInputCheck(string valueCheck, string message) {
+            string inputValue;
+            cout << message << endl;
+            getline(cin, inputValue);
+            return inputValue == valueCheck;
+    }
     int main(){
-        const uint32_t userInputValue = GetUserInputValue();
-        const vector<bool> boolArray = ConvertUnsignedIntToBinary(userInputValue);
-        PrintBinaryNumber(boolArray);
-        BitwiseConvertAndPrint(userInputValue);
+        while (true){
+            const uint32_t userInputValue = GetUserInputValue();
+            const vector<bool> boolArray = ConvertUnsignedIntToBinary(userInputValue);
+            PrintBinaryNumber(boolArray);
+            BitwiseConvertAndPrint(userInputValue);
+            if(BooleanInputCheck("X", "Press x to quit!"))
+                break;
+        }
+        cout << "Shutting down" << endl;
         return 0;
     }
