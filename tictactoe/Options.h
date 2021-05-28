@@ -12,8 +12,8 @@ class Options{
 
     public:
         Options();
-        int GetOffensiveTileIndex();
-        int GetDefensiveTileIndex();
+        int GetOffensiveTileIndex() const;
+        int GetDefensiveTileIndex() const;
         void GetOption(char tileMarker,int index);
         void GetTwoInARow(int index, int moduloValue);
     private:

@@ -7,10 +7,10 @@
         opponentTiles = 0;
         emptyTileIndex = -1;
     }
-    int Options::GetOffensiveTileIndex(){
+    int Options::GetOffensiveTileIndex() const{
         return GetRandomTileIndexFrom(ownOptions);
     }
-    int Options::GetDefensiveTileIndex(){
+    int Options::GetDefensiveTileIndex() const{
         return GetRandomTileIndexFrom(opponentsOptions);
     }
     void Options::GetOption(const char tileMarker, const int index){
