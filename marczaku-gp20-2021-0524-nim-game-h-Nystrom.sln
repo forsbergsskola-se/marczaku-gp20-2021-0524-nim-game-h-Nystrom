@@ -4,6 +4,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "nim", "nim.vcxproj", "{EE20
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tictactoe", "tictactoe\tictactoe.vcxproj", "{5B49A39F-0400-487F-9104-6DDE4EC75D98}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BinaryConverter", "BinaryConverter\BinaryConverter.vcxproj", "{C666FABC-B2EA-4A1D-BA61-6BE54DC77EB1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -28,5 +30,13 @@ Global
 		{5B49A39F-0400-487F-9104-6DDE4EC75D98}.Release|Win32.Build.0 = Release|Win32
 		{5B49A39F-0400-487F-9104-6DDE4EC75D98}.Release|x64.ActiveCfg = Release|x64
 		{5B49A39F-0400-487F-9104-6DDE4EC75D98}.Release|x64.Build.0 = Release|x64
+		{C666FABC-B2EA-4A1D-BA61-6BE54DC77EB1}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C666FABC-B2EA-4A1D-BA61-6BE54DC77EB1}.Debug|Win32.Build.0 = Debug|Win32
+		{C666FABC-B2EA-4A1D-BA61-6BE54DC77EB1}.Debug|x64.ActiveCfg = Debug|x64
+		{C666FABC-B2EA-4A1D-BA61-6BE54DC77EB1}.Debug|x64.Build.0 = Debug|x64
+		{C666FABC-B2EA-4A1D-BA61-6BE54DC77EB1}.Release|Win32.ActiveCfg = Release|Win32
+		{C666FABC-B2EA-4A1D-BA61-6BE54DC77EB1}.Release|Win32.Build.0 = Release|Win32
+		{C666FABC-B2EA-4A1D-BA61-6BE54DC77EB1}.Release|x64.ActiveCfg = Release|x64
+		{C666FABC-B2EA-4A1D-BA61-6BE54DC77EB1}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 EndGlobal
