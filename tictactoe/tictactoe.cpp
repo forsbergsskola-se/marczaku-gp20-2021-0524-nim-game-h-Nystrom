@@ -64,7 +64,7 @@ bool BooleanInputCheck(const char valueCheck, const string message) {
 }
 bool DiagonalCheck(const CurrentTurn currentTurn,string tileMap[]){
     const int middleTileValue = 4;
-    if(tileMap[middleTileValue][0] == currentTurn.marker && currentTurn.newTileIndex % 2 == 0){
+    if(tileMap[middleTileValue][0] == currentTurn.marker && currentTurn.tileIndex % 2 == 0){
         for (int i = 6; i <= 8; i++){
             if(tileMap[i][0] == currentTurn.marker && tileMap[i%middleTileValue][0] == currentTurn.marker){
                 return true;
@@ -77,7 +77,7 @@ bool DiagonalCheck(const CurrentTurn currentTurn,string tileMap[]){
 bool RowCheck(const CurrentTurn currentTurnData,string tileMap[]){
     const int rowLength = 3;
     for (int i = 0; i < rowLength; i++){
-        const int startOfRowIndex = currentTurnData.newTileIndex % rowLength + i * rowLength;
+        const int startOfRowIndex = currentTurnData.tileIndex % rowLength + i * rowLength;
         if(tileMap[startOfRowIndex][0] != currentTurnData.marker)
             break;
         if(i == rowLength-1)
@@ -89,7 +89,7 @@ bool RowCheck(const CurrentTurn currentTurnData,string tileMap[]){
 bool ColumnCheck(const CurrentTurn playerTurnData,string tileMap[]){
     const int columnLength = 3;
     for (int i = 0; i < columnLength; i++){
-        const int temp = playerTurnData.newTileIndex - playerTurnData.newTileIndex % columnLength + i;
+        const int temp = playerTurnData.tileIndex - playerTurnData.tileIndex % columnLength + i;
         if(tileMap[temp][0] != playerTurnData.marker)
             break;
         if(i==columnLength-1)
@@ -124,9 +124,7 @@ int main(){
             currentPlayer = NextPlayer(currentPlayer);
             if(isAgainstBot && currentPlayer == 2){
                 cout << "Bot's turn to pick tile: " << endl;
-                auto bot = new Bot();
-                tileNumber = bot->PickTile(tileMap);
-                delete bot;
+                tileNumber = Bot().PickTile(tileMap);
             }
             else{
                 tileNumber = PickTile(currentPlayer, tileMap);
@@ -134,16 +132,14 @@ int main(){
             const char playerMarker = GetTileMarker(currentPlayer);
             tileMap[tileNumber] = playerMarker;
             UpdateTileMap(tileMap, rowSize);
-            const auto currentTurnData = new CurrentTurn(playerMarker, tileNumber);
-            if(HasThreeInARow(*currentTurnData,tileMap)){
+            const auto currentTurnData = CurrentTurn(playerMarker, tileNumber);
+            if(HasThreeInARow(currentTurnData,tileMap)){
                 endOfGameMessage = "Player"+to_string(currentPlayer)+ " won!";
-                delete currentTurnData;
                 break;
             }
             ++currentTurn;
             if(currentTurn > maxSize){
                 endOfGameMessage = "Game ended in a draw!";
-                delete currentTurnData;
                  break;   
             }
         }

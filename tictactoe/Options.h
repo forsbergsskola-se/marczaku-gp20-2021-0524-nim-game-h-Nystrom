@@ -1,7 +1,7 @@
 ﻿#pragma once
 using namespace std;
 #include <vector>
-#include <cstdlib>
+// #include <cstdlib>
 
 class Options{
     vector<int> opponentsOptions;

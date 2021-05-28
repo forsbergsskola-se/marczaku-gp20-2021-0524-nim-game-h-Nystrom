@@ -2,7 +2,7 @@
  
     int Bot::PickTile(string tileMap[]){
         int tileIndex = -1;
-        auto option = new Options();
+        const auto option = new Options();
         FindRowOptions(tileMap, option);
         FindColumnOptions(tileMap, option);
         FindDiagonalOptions(tileMap, option);
@@ -18,7 +18,7 @@
         if(CanPickMiddleTile(tileMap[4][0])){
             return 4;
         }
-        const int emptyTileIndex = GetRandomEvenEmptyTileIndex(tileMap);
+        const int emptyTileIndex = GetRandomEmptyCornerTileIndex(tileMap);
         if(emptyTileIndex != -1)
             return emptyTileIndex;
         return GetFirstEmptyTileIndex(tileMap);
@@ -50,7 +50,7 @@
             }
         }
     }
-    int Bot::GetRandomEvenEmptyTileIndex(string* tileMap){
+    int Bot::GetRandomEmptyCornerTileIndex(string* tileMap){
         auto tileMapCopy = new vector<int>();
         
         for (int i = 0; i < sizeof(tileMap);i++){
@@ -64,7 +64,7 @@
     }
     int Bot::GetFirstEmptyTileIndex(string* tileMap){
         for (int i = 0; i < sizeof(tileMap);i++){
-            if(tileMap[i][0] == ' ' && i % 2 == 0)
+            if(tileMap[i][0] == ' ')
                 return i;
         }
         return -1;
