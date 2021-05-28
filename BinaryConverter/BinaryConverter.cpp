@@ -34,18 +34,32 @@ using namespace std;
         return *boolArray;
     } 
     void PrintBinaryNumber(const vector<bool> boolArray){
+        cout << "Logical operators 32bit uInt: " << endl;
         cout << "0b" << flush;
         for (int i = 0; i < boolArray.size(); i++){
             const char numberCharacter = boolArray.at(i) ? '1' : '0';
             cout << numberCharacter << flush;
         }
-        
+        cout << "" << endl;
+    }
+    void BitwiseConvertAndPrint(const uint32_t inputValue){
+        cout << "Bitwise operators 32bit uInt: " << endl;
+        cout << "0b" << flush;
+        for (int i = 31; i >= 0; i--){
+            if(inputValue & 1 << i){
+                cout << 1 << flush;
+            }
+            else{
+                cout << 0 << flush;    
+            }
+        }
+        cout << "" << endl;
     }
 
     int main(){
         const uint32_t userInputValue = GetUserInputValue();
         const vector<bool> boolArray = ConvertUnsignedIntToBinary(userInputValue);
         PrintBinaryNumber(boolArray);
-
+        BitwiseConvertAndPrint(userInputValue);
         return 0;
     }
