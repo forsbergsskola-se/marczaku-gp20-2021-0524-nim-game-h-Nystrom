@@ -2,7 +2,7 @@
  
     int Bot::PickTile(string tileMap[]){
         int tileIndex = -1;
-        const auto option = new Options();
+        const auto option = new TileOptions();
         FindRowOptions(tileMap, option);
         FindColumnOptions(tileMap, option);
         FindDiagonalOptions(tileMap, option);
@@ -27,13 +27,13 @@
         return middleTile == ' ';
     }
 
-    void Bot::FindRowOptions(string* tileMap, Options* option){
+    void Bot::FindRowOptions(string* tileMap, TileOptions* option){
         for (int i = 0; i <= sizeof(tileMap); i++){
             option->GetOption(tileMap[i][0],i);
             option->GetTwoInARow(i, 3);
         }
     }
-    void Bot::FindColumnOptions(string* tileMap, Options* option){
+    void Bot::FindColumnOptions(string* tileMap, TileOptions* option){
         for (int i = 0; i < 3; i++){
             for (int j = 0; j <= 6; j+=3){
                 const int tileIndex = i+j;
@@ -42,7 +42,7 @@
             }    
         }
     }
-    void Bot::FindDiagonalOptions(string* tileMap, Options* option){
+    void Bot::FindDiagonalOptions(string* tileMap, TileOptions* option){
         for(int i = 0; i <= 2;i+=2){
             for(int j = 0+i; j <= 8-i;j+=4-i){
                 option->GetOption(tileMap[j][0],j);
@@ -51,16 +51,16 @@
         }
     }
     int Bot::GetRandomEmptyCornerTileIndex(string* tileMap){
-        auto tileMapCopy = new vector<int>();
+        vector<int> tileMapCopy;
         
         for (int i = 0; i < sizeof(tileMap);i++){
             if(tileMap[i][0] == ' ' && i % 2 == 0)
-                tileMapCopy->push_back(i);
+                tileMapCopy.push_back(i);
         }
-        if(tileMapCopy->size() == 0)
+        if(tileMapCopy.size() == 0)
             return -1;
-        const int randomNumber = rand() % tileMapCopy->size();
-        return tileMapCopy->at(randomNumber);
+        const int randomNumber = rand() % tileMapCopy.size();
+        return tileMapCopy.at(randomNumber);
     }
     int Bot::GetFirstEmptyTileIndex(string* tileMap){
         for (int i = 0; i < sizeof(tileMap);i++){

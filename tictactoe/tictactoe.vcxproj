@@ -156,13 +156,13 @@
   <ItemGroup>
     <ClCompile Include="Bot.cpp" />
     <ClCompile Include="CurrentTurn.cpp" />
-    <ClCompile Include="Options.cpp" />
+    <ClCompile Include="TileOptions.cpp" />
     <ClCompile Include="tictactoe.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bot.h" />
     <ClInclude Include="CurrentTurn.h" />
-    <ClInclude Include="Options.h" />
+    <ClInclude Include="TileOptions.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

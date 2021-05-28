@@ -1,9 +1,8 @@
 ﻿#pragma once
 using namespace std;
 #include <vector>
-// #include <cstdlib>
 
-class Options{
+class TileOptions{
     vector<int> opponentsOptions;
     vector<int> ownOptions;
     int ownedTiles;
@@ -11,7 +10,7 @@ class Options{
     int emptyTileIndex;
 
     public:
-        Options();
+        TileOptions();
         int GetOffensiveTileIndex() const;
         int GetDefensiveTileIndex() const;
         void GetOption(char tileMarker,int index);

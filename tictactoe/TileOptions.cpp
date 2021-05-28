@@ -1,19 +1,19 @@
-﻿#include "Options.h"
+﻿#include "TileOptions.h"
 
-    Options::Options(){
-        vector<int>opponentsOptions;
+    TileOptions::TileOptions(){
+        vector<int> opponentsOptions;
         vector<int> ownOptions;
         ownedTiles = 0;
         opponentTiles = 0;
         emptyTileIndex = -1;
     }
-    int Options::GetOffensiveTileIndex() const{
+    int TileOptions::GetOffensiveTileIndex() const{
         return GetRandomTileIndexFrom(ownOptions);
     }
-    int Options::GetDefensiveTileIndex() const{
+    int TileOptions::GetDefensiveTileIndex() const{
         return GetRandomTileIndexFrom(opponentsOptions);
     }
-    void Options::GetOption(const char tileMarker, const int index){
+    void TileOptions::GetOption(const char tileMarker, const int index){
         switch (tileMarker){
         case 'X': {
             ++ownedTiles;
@@ -30,7 +30,7 @@
             break;
         }
     }
-    void Options::GetTwoInARow(const int index, const int moduloValue){
+    void TileOptions::GetTwoInARow(const int index, const int moduloValue){
         if((index+1) % moduloValue == 0){
             if(emptyTileIndex != -1){
                 if(ownedTiles == 2)
@@ -43,7 +43,7 @@
             emptyTileIndex = -1;
         }
     }
-    int Options::GetRandomTileIndexFrom(vector<int> emptyTiles){
+    int TileOptions::GetRandomTileIndexFrom(vector<int> emptyTiles){
         if(emptyTiles.empty())
             return -1;
         const int randomNumber = rand() % emptyTiles.size();

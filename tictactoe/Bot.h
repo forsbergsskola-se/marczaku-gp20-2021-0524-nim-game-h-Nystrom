@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "Options.h"
+#include "TileOptions.h"
 using namespace std;
 #include <string>
 
@@ -9,9 +9,9 @@ class Bot{
     static int PickTile(string tileMap[]);
     private:
     static bool CanPickMiddleTile(char middleTile);
-    static void FindRowOptions(string* tileMap, Options* option);
-    static void FindColumnOptions(string* tileMap, Options* option);
-    static void FindDiagonalOptions(string* tileMap, Options* option);
+    static void FindRowOptions(string* tileMap, TileOptions* option);
+    static void FindColumnOptions(string* tileMap, TileOptions* option);
+    static void FindDiagonalOptions(string* tileMap, TileOptions* option);
     static int GetRandomEmptyCornerTileIndex(string* tileMap);
     static int GetFirstEmptyTileIndex(string* tileMap);
 };
